@@ -6,7 +6,7 @@ services:
       DB_FILE_NAME: "data/bot.db"
     restart: unless-stopped
     volumes:
-      - iris-data:/app/data
+      - scratch-data:/app/data
 
 volumes:
-  iris-data:
+  scratch-data:
