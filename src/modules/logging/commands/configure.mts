@@ -4,7 +4,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Guild, heading, MessageFlags, PermissionFlagsBits } from "discord.js"
+import {
+  ApplicationIntegrationType,
+  Guild,
+  heading,
+  InteractionContextType,
+  MessageFlags,
+  PermissionFlagsBits,
+} from "discord.js"
 import d from "fluent-commands"
 import { webhooksTable } from "../../../schema.mjs"
 import { titleCase } from "../../../util.mjs"
@@ -14,6 +21,8 @@ import { getWebhook } from "../logging.mjs"
 export const Configure = d
   .slashCommand("log", "Commands related to logging")
   .defaultMemberPermissions(PermissionFlagsBits.Administrator)
+  .integrationTypes(ApplicationIntegrationType.GuildInstall)
+  .contexts(InteractionContextType.Guild)
   .subcommands({
     channels: d
       .subcommand("Configure logging channels")
