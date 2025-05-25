@@ -53,10 +53,9 @@ export const MessageUpdate = d
         d
           .container(
             d.text(heading("Message edited")),
-            d.text(heading("Author", HeadingLevel.Two)),
             d.section(
-              d.text(author.displayName),
-              d.text(userMention(author.id)),
+              d.text(heading("Author", HeadingLevel.Two)),
+              d.text(`${author.displayName}\n${userMention(author.id)}`),
               d.text(author.id),
               d.thumbnail(author.displayAvatarURL()),
             ),

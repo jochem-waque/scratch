@@ -38,10 +38,9 @@ export const GuildMemberAdd = d
       components: [
         d
           .container(
-            d.text(heading("Member joined")),
             d.section(
-              d.text(member.displayName),
-              d.text(userMention(member.id)),
+              d.text(heading("Member joined")),
+              d.text(`${member.displayName}\n${userMention(member.id)}`),
               d.text(member.id),
               d.thumbnail(member.displayAvatarURL()),
             ),
