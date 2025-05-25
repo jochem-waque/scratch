@@ -8,6 +8,10 @@ import camelcaseKeys from "camelcase-keys"
 import { z } from "zod"
 
 export const Env = await z
-  .object({ BOT_TOKEN: z.string(), DB_FILE_NAME: z.string() })
+  .object({
+    BOT_TOKEN: z.string(),
+    DB_FILE_NAME: z.string(),
+    ENABLE_LOGGING: z.string().transform((arg) => arg === "true"),
+  })
   .transform((arg) => camelcaseKeys(arg))
   .parseAsync(process.env)

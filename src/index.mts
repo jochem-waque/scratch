@@ -39,7 +39,10 @@ const bot = d
     ],
   })
   .addModule(General)
-  .addModule(Logging)
   .register()
+
+if (Env.enableLogging) {
+  bot.addModule(Logging)
+}
 
 await bot.client.login(Env.botToken)
