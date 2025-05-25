@@ -13,7 +13,7 @@ import {
   WebhookMessageCreateOptions,
 } from "discord.js"
 import d from "fluent-commands"
-import { getWebhooks } from "../../../util/webhooks.mjs"
+import { getWebhooks } from "../logging.mjs"
 
 export const UserUpdate = d
   .event("userUpdate")

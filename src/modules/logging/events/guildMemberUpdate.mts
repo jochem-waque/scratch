@@ -12,7 +12,7 @@ import {
   userMention,
 } from "discord.js"
 import d from "fluent-commands"
-import { getWebhook } from "../../../util/webhooks.mjs"
+import { getWebhook } from "../logging.mjs"
 
 export const GuildMemberUpdate = d
   .event("guildMemberUpdate")

@@ -14,7 +14,7 @@ import {
   userMention,
 } from "discord.js"
 import d from "fluent-commands"
-import { getWebhook } from "../../../util/webhooks.mjs"
+import { getWebhook } from "../logging.mjs"
 
 export const MessageDelete = d
   .event("messageDelete")

@@ -12,7 +12,7 @@ import {
 } from "discord.js"
 import d from "fluent-commands"
 import { webhooksTable } from "../../../schema.mjs"
-import { createWebhook, deleteWebhook } from "../../../util/webhooks.mjs"
+import { createWebhook, deleteWebhook } from "../logging.mjs"
 
 export const Configure = d
   .slashCommand("log", "Commands related to logging")
