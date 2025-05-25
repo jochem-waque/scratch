@@ -78,9 +78,8 @@ export const GuildMemberUpdate = d
       components: [
         d
           .container(
-            d.text(heading("Member updated")),
             d.section(
-              d.text(heading("Member", HeadingLevel.Two)),
+              d.text(heading("Member updated")),
               d.text(`${newMember.displayName}\n${userMention(newMember.id)}`),
               d.text(newMember.id),
               d.thumbnail(newMember.displayAvatarURL()),

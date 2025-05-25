@@ -97,9 +97,8 @@ export const UserUpdate = d
       components: [
         d
           .container(
-            d.text(heading("User updated")),
             d.section(
-              d.text(heading("User", HeadingLevel.Two)),
+              d.text(heading("User updated")),
               d.text(`${newUser.displayName}\n${userMention(newUser.id)}`),
               d.text(newUser.id),
               d.thumbnail(newUser.displayAvatarURL()),
