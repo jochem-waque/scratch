@@ -81,7 +81,8 @@ export const GuildMemberUpdate = d
             d.text(heading("Member updated")),
             d.section(
               d.text(heading("Member", HeadingLevel.Two)),
-              d.text(userMention(newMember.id)),
+              d.text(`${newMember.displayName}\n${userMention(newMember.id)}`),
+              d.text(newMember.id),
               d.thumbnail(newMember.displayAvatarURL()),
             ),
             ...changes,

@@ -64,7 +64,8 @@ export const GuildMemberRemove = d
           .container(
             d.section(
               d.text(heading("Member left")),
-              d.text(userMention(member.id)),
+              d.text(`${member.displayName}\n${userMention(member.id)}`),
+              d.text(member.id),
               d.thumbnail(member.displayAvatarURL()),
             ),
             ...joinedAt,

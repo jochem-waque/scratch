@@ -100,7 +100,8 @@ export const UserUpdate = d
             d.text(heading("User updated")),
             d.section(
               d.text(heading("User", HeadingLevel.Two)),
-              d.text(userMention(newUser.id)),
+              d.text(`${newUser.displayName}\n${userMention(newUser.id)}`),
+              d.text(newUser.id),
               d.thumbnail(newUser.displayAvatarURL()),
             ),
             ...changes,
