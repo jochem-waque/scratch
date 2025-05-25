@@ -11,8 +11,8 @@ export const webhooksTable = sqliteTable(
   {
     id: int().primaryKey(),
     guild: text().notNull(),
-    channel: text().notNull(),
     category: text({ enum: ["message", "member", "user"] }).notNull(),
+    webhookId: text("webhook_id").notNull().unique(),
   },
   (t) => [unique().on(t.guild, t.category)],
 )

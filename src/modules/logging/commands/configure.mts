@@ -4,58 +4,56 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {
-  ChannelType,
-  Guild,
-  MessageFlags,
-  PermissionFlagsBits,
-} from "discord.js"
+import { Guild, heading, MessageFlags, PermissionFlagsBits } from "discord.js"
 import d from "fluent-commands"
 import { webhooksTable } from "../../../schema.mjs"
-import { createWebhook, deleteWebhook } from "../logging.mjs"
+import { titleCase } from "../../../util.mjs"
+import { Channel } from "../components/channel.mjs"
+import { getWebhook } from "../logging.mjs"
 
 export const Configure = d
   .slashCommand("log", "Commands related to logging")
   .defaultMemberPermissions(PermissionFlagsBits.Administrator)
-  .subcommands(
-    Object.fromEntries(
-      webhooksTable.category.enumValues.map((category) => [
-        `${category}s`,
-        d
-          .subcommand(`Configure logging for changes to ${category}s`)
-          .options({
-            channel: d
-              .option("Logging channel")
-              .channel()
-              .channelTypes(ChannelType.GuildText),
-          })
-          .handler(async (interaction, { channel }) => {
-            if (!interaction.inCachedGuild()) {
-              return
-            }
+  .subcommands({
+    channels: d
+      .subcommand("Configure logging channels")
+      .handler(async (interaction) => {
+        if (!interaction.inCachedGuild()) {
+          return
+        }
 
-            await interaction.deferReply({ flags: MessageFlags.Ephemeral })
+        await interaction.reply(await channelsMessage(interaction.guild))
+      }),
+  })
 
-            await updateWebhook(interaction.guild, channel, category)
+export async function channelsMessage(guild: Guild) {
+  const channels: Partial<
+    Record<typeof webhooksTable.$inferInsert.category, string>
+  > = {}
 
-            await interaction.editReply({
-              content: "TODO",
-            })
-          }),
-      ]), // TODO: fix in fluent-commands
-    ) as Parameters<ReturnType<typeof d.slashCommand>["subcommands"]>[0],
-  )
-
-async function updateWebhook(
-  guild: Guild,
-  channel: Parameters<typeof createWebhook>[0] | undefined,
-  category: typeof webhooksTable.$inferInsert.category,
-) {
-  await deleteWebhook(guild, category)
-
-  if (!channel) {
-    return
+  for (const category of webhooksTable.category.enumValues) {
+    const webhook = await getWebhook(guild, category)
+    if (webhook) {
+      channels[category] = webhook.channelId
+    }
   }
 
-  await createWebhook(channel, category)
+  return {
+    flags: MessageFlags.Ephemeral | MessageFlags.IsComponentsV2,
+    components: [
+      d
+        .container(
+          d.text(heading("Logging channels")),
+          ...webhooksTable.category.enumValues.flatMap((category) => [
+            d.text(heading(titleCase(`${category}s`))),
+            d.row(
+              Channel.with(category).setDefaultChannels(
+                channels[category] ? [channels[category]] : [],
+              ),
+            ),
+          ]),
+        )
+        .build(),
+    ],
+  }
 }

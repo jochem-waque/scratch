@@ -15,7 +15,9 @@ import { and, eq } from "drizzle-orm"
 import d from "fluent-commands"
 import { Database } from "../../index.mjs"
 import { webhooksTable } from "../../schema.mjs"
+import { titleCase } from "../../util.mjs"
 import { Configure } from "./commands/configure.mjs"
+import { Channel } from "./components/channel.mjs"
 import { GuildAvailable } from "./events/guildAvailable.mjs"
 import { GuildMemberAdd } from "./events/guildMemberAdd.mjs"
 import { GuildMemberRemove } from "./events/guildMemberRemove.mjs"
@@ -27,6 +29,7 @@ import { UserUpdate } from "./events/userUpdate.mjs"
 export const Logging = d
   .module("logging")
   .addCommand(Configure)
+  .addComponent(Channel)
   .addEventHandler(GuildAvailable)
   .addEventHandler(GuildMemberAdd)
   .addEventHandler(GuildMemberRemove)
@@ -56,17 +59,21 @@ export async function getWebhook(
     return null
   }
 
-  const webhook = cache.get(result.channel)
+  const webhook = cache.get(result.webhookId)
   if (webhook) {
     return webhook
   }
 
   await cacheWebhooks(guild)
 
-  const newWebhook = cache.get(result.channel)
+  const newWebhook = cache.get(result.webhookId)
   if (newWebhook) {
     return newWebhook
   }
+
+  Database.delete(webhooksTable)
+    .where(eq(webhooksTable.webhookId, result.webhookId))
+    .run()
 
   return null
 }
@@ -76,12 +83,14 @@ export async function getWebhooks(
   category: typeof webhooksTable.$inferSelect.category,
 ) {
   const webhooks = []
+
   for (const guild of guilds) {
     const webhook = await getWebhook(guild, category)
     if (webhook) {
       webhooks.push(webhook)
     }
   }
+
   return webhooks
 }
 
@@ -97,7 +106,7 @@ async function cacheWebhooks(guild: Guild) {
       continue
     }
 
-    cache.set(webhook.channelId, webhook)
+    cache.set(webhook.id, webhook)
   }
 }
 
@@ -123,13 +132,15 @@ export async function createWebhook(
   channel: Exclude<GuildTextBasedChannel, AnyThreadChannel>,
   category: typeof webhooksTable.$inferInsert.category,
 ) {
-  const webhook = await channel.createWebhook({ name: "Logging" })
+  const webhook = await channel.createWebhook({
+    name: titleCase(`${category} Logging`),
+  })
 
   Database.insert(webhooksTable)
-    .values({ guild: channel.guildId, channel: channel.id, category })
+    .values({ guild: channel.guildId, webhookId: webhook.id, category })
     .run()
 
-  cache.set(channel.id, webhook)
+  cache.set(webhook.id, webhook)
 
   return webhook
 }
