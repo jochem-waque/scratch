@@ -1,12 +1,11 @@
 # Scratch
 
-_Yet_ another Discord bot that I'm making from scratch
+_Yet_ another Discord bot that I'm making from scratch.
 
 ## Usage
 
 1. Edit `example.env` and save it as `.env`
-2. Edit `blacklist.example.json` and save it as `blacklist.json`
-3. Run `docker compose up`
+2. Run `docker compose up`
 
 ## License
 
