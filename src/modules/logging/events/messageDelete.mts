@@ -52,10 +52,12 @@ export const MessageDelete = d
       components: [
         d
           .container(
+            d.text(heading("Message deleted")),
+            d.text(heading("Author", HeadingLevel.Two)),
             d.section(
-              d.text(heading("Message deleted")),
-              d.text(heading("Author", HeadingLevel.Two)),
+              d.text(author.displayName),
               d.text(userMention(author.id)),
+              d.text(author.id),
               d.thumbnail(author.displayAvatarURL()),
             ),
             d.text(heading("Channel", HeadingLevel.Two)),
