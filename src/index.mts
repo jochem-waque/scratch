@@ -16,7 +16,7 @@ export const Database = drizzle(Env.dbFileName)
 
 migrate(Database, { migrationsFolder: "./drizzle" })
 
-const bot = d
+let bot = d
   .bot({
     intents: [
       GatewayIntentBits.Guilds,
@@ -42,7 +42,7 @@ const bot = d
   .register()
 
 if (Env.enableLogging) {
-  bot.addModule(Logging)
+  bot = bot.addModule(Logging)
 }
 
-await bot.client.login(Env.botToken)
+await bot.login(Env.botToken)
