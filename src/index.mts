@@ -10,6 +10,7 @@ import { migrate } from "drizzle-orm/better-sqlite3/migrator"
 import d from "fluent-commands"
 import { General } from "./modules/general/general.mjs"
 import { Logging } from "./modules/logging/logging.mjs"
+import { Moderation } from "./modules/moderation/moderation.mjs"
 import { Env } from "./variables.mjs"
 
 export const Database = drizzle(Env.dbFileName)
@@ -43,6 +44,10 @@ let bot = d
 
 if (Env.enableLogging) {
   bot = bot.addModule(Logging)
+}
+
+if (Env.enableModeration) {
+  bot.addModule(Moderation)
 }
 
 if (Env.webhookUrl) {

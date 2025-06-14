@@ -15,6 +15,13 @@
       "when": 1748171772909,
       "tag": "0001_powerful_stepford_cuckoos",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1748180706121,
+      "tag": "0002_shocking_magneto",
+      "breakpoints": true
     }
   ]
 }
