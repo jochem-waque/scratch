@@ -16,27 +16,3 @@ export const webhooksTable = sqliteTable(
   },
   (t) => [unique().on(t.guild, t.category)],
 )
-
-export const actionLogsTable = sqliteTable("action_log", {
-  id: int().primaryKey(),
-  guild: text().notNull(),
-  reason: text().notNull(),
-  type: text({ enum: ["warn", "kick", "ban", "timeout"] }).notNull(),
-  dm: int({ mode: "boolean" }).notNull(),
-  dmSuccess: int("dm_success", { mode: "boolean" }),
-  success: int("success", { mode: "boolean" }),
-  by: text().notNull(),
-  target: text().notNull(),
-})
-
-// export const actionAttachmentsTable = sqliteTable(
-//   "action_attachment",
-//   {
-//     id: int().primaryKey(),
-//     action: int()
-//       .notNull()
-//       .references(() => actionLogsTable.id),
-//     url: text().notNull(),
-//   },
-//   (t) => [unique().on(t.action, t.url)],
-// )

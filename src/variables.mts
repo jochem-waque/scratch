@@ -12,7 +12,6 @@ export const Env = await z
     BOT_TOKEN: z.string(),
     DB_FILE_NAME: z.string(),
     ENABLE_LOGGING: z.string().transform((arg) => arg === "true"),
-    ENABLE_MODERATION: z.string().transform((arg) => arg === "true"),
     WEBHOOK_URL: z
       .string()
       .optional()
