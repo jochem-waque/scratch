@@ -19,7 +19,11 @@ import { getWebhook } from "../logging.mjs"
 export const MessageUpdate = d
   .event("messageUpdate")
   .handler(async (oldMessage, newMessage) => {
-    if (newMessage.author?.bot !== false || !newMessage.inGuild()) {
+    if (
+      newMessage.author?.bot !== false ||
+      !newMessage.inGuild() ||
+      oldMessage.partial
+    ) {
       return
     }
 
@@ -62,7 +66,7 @@ export const MessageUpdate = d
             d.text(heading("Channel", HeadingLevel.Two)),
             d.text(channelMention(newMessage.channel.id)),
             d.text(heading("Before", HeadingLevel.Two)),
-            d.text((oldMessage.content ?? "Not cached") || "Empty"),
+            d.text(oldMessage.content || "Empty"),
             d.text(heading("After", HeadingLevel.Two)),
             d.text(newMessage.content || "Empty"),
             ...attachments,
