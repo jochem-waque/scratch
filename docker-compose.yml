@@ -3,6 +3,7 @@ services:
     build: .
     environment:
       BOT_TOKEN: "${BOT_TOKEN}"
+      WEBHOOK_URL: "${WEBHOOK_URL}"
       DB_FILE_NAME: "data/bot.db"
       ENABLE_LOGGING: "${ENABLE_LOGGING}"
     restart: unless-stopped

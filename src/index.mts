@@ -45,4 +45,8 @@ if (Env.enableLogging) {
   bot = bot.addModule(Logging)
 }
 
+if (Env.webhookUrl) {
+  bot = bot.addErrorWebhook(Env.webhookUrl)
+}
+
 await bot.login(Env.botToken)
